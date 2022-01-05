@@ -74,6 +74,8 @@ int main() {
     return 0;
 }
 
+// Notes:
+
 // For shifting, move old values and only calculate new values?
 // Or recalculate all
 
