@@ -7,14 +7,14 @@ cs225::PNG mandelbrot() {
   int Width = 640, Height = 480;
   cs225::PNG png(Width, Height);
  
-  bool Targeting = 1;
+  bool Targeting = 0;
 
-  double delta = 0.006125/2;
-  int PosI, NegI;
+/*   double delta = 1.0/(8192 * 4096);
+  double TargetY = 1.0/65536;
+  int PosI, NegI; */
 
-  double x, y, X, Y, I, temp;
   double MI = 128; // Find optimal scaling with Zoom if desired
-  double Zoom = 3; // Expressed as a scale of magnitude from the original default Zoom
+  double Zoom = 2; // Expressed as a scale of magnitude from the original default Zoom
   double ScaleWidth = 4.5; // The length/width of the Real-Imaginary plane that the set is calculated in
   double CenterxShift = -3/(4 * ScaleWidth);
   double xShift = CenterxShift, yShift = 0.0; // Expressed as a percentage of the width and height of the image
@@ -26,40 +26,44 @@ cs225::PNG mandelbrot() {
   int SmallerDim = Width < Height ? Width : Height; // Use for scaling to smaller dimension and maintaining circularity
   int XShift = SmallerDim == Width ? 0 : (Height - Width)/2;
   int YShift = SmallerDim == Height ? 0 : (Width - Height)/2;
-  for(int i = 0; i < Height; i++)
-    for(int j = 0; j < Width; j++) {
+  for(int i = 0; i < Height; ++i)
+    for(int j = 0; j < Width; ++j) {
       // Implemented Zoom squaring, not sure if it fixed the Zoom magnitudal scaling problem
-      X = (ScaleWidth * ((j + XShift) + xShift * Zoom * SmallerDim)/SmallerDim - ScaleWidth/2)/Zoom; // If Zoom commented it is non-constant with Zoom so
-      Y = (ScaleWidth * ((i + YShift) + yShift * Zoom * SmallerDim)/SmallerDim - ScaleWidth/2)/Zoom; // that the user can pan more easily without flying off
-      x = 0, y = 0;
-      I = 0;
-      while(x * x + y * y <= 4 && I < MI) {
-        temp = x * x - y * y + X;
+      double X = (ScaleWidth * ((j + XShift) + xShift * Zoom * SmallerDim)/SmallerDim - ScaleWidth/2)/Zoom; // If Zoom commented it is non-constant with Zoom so
+      double Y = (ScaleWidth * ((i + YShift) + yShift * Zoom * SmallerDim)/SmallerDim - ScaleWidth/2)/Zoom; // that the user can pan more easily without flying off
+      double x = 0, y = 0, x2 = 0, y2 = 0;
+      int I = 0;
+
+      while(x2 + y2 <= 4 && I < MI) {
         y = 2 * x * y + Y;
-        x = temp;
-        I++;
+        x = x2 - y2 + X;
+        x2 = x * x;
+        y2 = y * y;
+        ++I;
       }
+
       cs225::HSLAPixel & pixel = png.getPixel(j, i);
       pixel.h = 300;
       pixel.s = 1;
       pixel.l = 1 - I/MI;
       pixel.a = 1;
-      if(Y <= (0.25 + delta) && Y >= (0.25 - delta)) {
+/*       if(Y <= (TargetY + delta) && Y >= (TargetY - delta)) {
         pixel.h = 360;
         pixel.l -= 0.1;
         PosI = i;
       }
-      if(Y >= -(0.25 + delta) && Y <= -(0.25 - delta)) {
+      if(Y >= -(TargetY + delta) && Y <= -(TargetY - delta)) {
         pixel.h = 360;
         pixel.l -= 0.1;
         NegI = i;
-      }
+      } */
     }
 
-  std::cout << PosI - NegI << '\n';
+  // std::cout << PosI - NegI << '\n';
 
 
 // Starfish: xShift = CenterxShift + 0.04173275077265841, yShift = 0.1428482553495056
+// Seahorse Spiral: xShift = CenterxShift + 0.0028, yShift = 0.0463
 
 //Targeting:
   if(Targeting) {
