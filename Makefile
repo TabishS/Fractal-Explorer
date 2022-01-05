@@ -1,4 +1,4 @@
-EXENAME = intro
+EXENAME = Mandelbrot
 OBJS = PNG.o HSLAPixel.o lodepng.o mandelbrot.o
 
 CXX = clang++
