@@ -1,7 +1,7 @@
 #include "cs225/PNG.h"
 #include <iostream>
 #include <stdlib.h>
-#include <random>
+#include <math.h>
 
 cs225::PNG mandelbrot() {
   int Width = 640, Height = 480;
@@ -13,11 +13,12 @@ cs225::PNG mandelbrot() {
   double TargetY = 1.0/65536;
   int PosI, NegI; */
 
-  int MI = 128; // Find optimal scaling with Zoom if desired
-  double Zoom = 2; // Expressed as a scale of magnitude from the original default Zoom
+  int MI = 64; // Find optimal scaling with Zoom if desired
+  double Zoom = 1; // Expressed as a scale of magnitude from the original default Zoom
+  double n = 2;
   double ScaleWidth = 4.5; // The length/width of the Real-Imaginary plane that the set is calculated in
-  double CenterxShift = -3/(4 * ScaleWidth);
-  double xShift = CenterxShift, yShift = 0.0; // Expressed as a percentage of the width and height of the image
+  // double CenterxShift = -3/(4 * ScaleWidth);
+  double xShift = 0, yShift = 0; // Expressed as a percentage of the width and height of the image
   // For a scale width of 4, the centering xShift is -3/(4 * 4) = -0.1875. For a scale width of 5, it is -3/(5 * 4) = -0.15
   // 4.5 is used as the scale width since it allows more to be on the screen while still being close to 4
   // The centering xShift is the xShift that results in the horizontal center of the screen
@@ -31,14 +32,14 @@ cs225::PNG mandelbrot() {
       // Implemented Zoom squaring, not sure if it fixed the Zoom magnitudal scaling problem
       double X = (ScaleWidth * ((j + XShift) + xShift * Zoom * SmallerDim)/SmallerDim - ScaleWidth/2)/Zoom; // If Zoom commented it is non-constant with Zoom so
       double Y = (ScaleWidth * ((i + YShift) + yShift * Zoom * SmallerDim)/SmallerDim - ScaleWidth/2)/Zoom; // that the user can pan more easily without flying off
-      double x = 0, y = 0, x2 = 0, y2 = 0;
+      double x = 0, xtemp, y = 0, xSquaredPlusySquared = 0;
       int I = 0;
 
-      while(x2 + y2 <= 4 && I < MI) {
-        y = 2 * x * y + Y;
-        x = x2 - y2 + X;
-        x2 = x * x;
-        y2 = y * y;
+      while(xSquaredPlusySquared <= 4 && I < MI) {
+        xtemp = pow((xSquaredPlusySquared), (n/2)) * cos(n * atan2(y, x)) + X;
+        y = pow((xSquaredPlusySquared), (n/2)) * sin(n * atan2(y, x)) + Y;
+        x = xtemp;
+        xSquaredPlusySquared = x * x + y * y;
         ++I;
       }
 
