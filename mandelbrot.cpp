@@ -13,7 +13,7 @@ cs225::PNG mandelbrot() {
   double TargetY = 1.0/65536;
   int PosI, NegI; */
 
-  double MI = 128; // Find optimal scaling with Zoom if desired
+  int MI = 128; // Find optimal scaling with Zoom if desired
   double Zoom = 2; // Expressed as a scale of magnitude from the original default Zoom
   double ScaleWidth = 4.5; // The length/width of the Real-Imaginary plane that the set is calculated in
   double CenterxShift = -3/(4 * ScaleWidth);
@@ -45,7 +45,7 @@ cs225::PNG mandelbrot() {
       cs225::HSLAPixel & pixel = png.getPixel(j, i);
       pixel.h = 300;
       pixel.s = 1;
-      pixel.l = 1 - I/MI;
+      pixel.l = 1 - double(I)/MI;
       pixel.a = 1;
 /*       if(Y <= (TargetY + delta) && Y >= (TargetY - delta)) {
         pixel.h = 360;
