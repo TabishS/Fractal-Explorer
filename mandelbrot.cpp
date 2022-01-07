@@ -32,15 +32,14 @@ cs225::PNG mandelbrot() {
       // Implemented Zoom squaring, not sure if it fixed the Zoom magnitudal scaling problem
       double X = (ScaleWidth * ((j + XShift) + xShift * Zoom * SmallerDim)/SmallerDim - ScaleWidth/2)/Zoom; // If Zoom commented it is non-constant with Zoom so
       double Y = (ScaleWidth * ((i + YShift) + yShift * Zoom * SmallerDim)/SmallerDim - ScaleWidth/2)/Zoom; // that the user can pan more easily without flying off
-      double x = 0, xtemp, y = 0, x2plusy2 = 0, x2y2pown, narctan2yx;
+      double x = 0, y = 0, x2plusy2 = 0, x2y2pown, narctan2yx;
       int I = 0;
 
       while(x2plusy2 <= 4 && I < MI) {
         narctan2yx = n * atan2(y, x);
         x2y2pown = pow((x2plusy2), (n/2));
-        xtemp = x2y2pown * cos(narctan2yx) + X;
+        x = x2y2pown * cos(narctan2yx) + X;
         y = x2y2pown * sin(narctan2yx) + Y;
-        x = xtemp;
         x2plusy2 = x * x + y * y;
         ++I;
       }
