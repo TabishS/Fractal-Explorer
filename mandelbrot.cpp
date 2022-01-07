@@ -7,7 +7,7 @@ cs225::PNG mandelbrot() {
   int Width = 640, Height = 480;
   cs225::PNG png(Width, Height);
  
-  bool Targeting = 1;
+  bool Targeting = 0;
 
 /*   double delta = 1.0/(8192 * 4096);
   double TargetY = 1.0/65536;
@@ -33,6 +33,7 @@ cs225::PNG mandelbrot() {
       double X = (ScaleWidth * ((j + XShift) + xShift * Zoom * SmallerDim)/SmallerDim - ScaleWidth/2)/Zoom; // If Zoom commented it is non-constant with Zoom so
       double Y = (ScaleWidth * ((i + YShift) + yShift * Zoom * SmallerDim)/SmallerDim - ScaleWidth/2)/Zoom; // that the user can pan more easily without flying off
       double x = 0, y = 0, x2plusy2 = 0, x2y2pown, narctan2yx;
+      // double X2plusY2 = X * X + Y * Y, X2Y2pown, narctan2YX;
       int I = 0;
 
       /* Multibrot */
@@ -44,6 +45,16 @@ cs225::PNG mandelbrot() {
         x2plusy2 = x * x + y * y;
         ++I;
       }
+      
+      // // /* Multibrot Julia Set */ //
+      // while (X2plusY2 <= 4  &&  I < MI) {
+      //   narctan2YX = n * atan2(Y, X);
+      //   X2Y2pown = pow(X2plusY2, n/2);
+      //   X = X2Y2pown * cos(narctan2YX) - 0.5;
+      //   Y = X2Y2pown * sin(narctan2YX) + 0.25;
+      //   X2plusY2 = X * X + Y * Y;
+      //   ++I;
+      // }
 
       // /* Mandelbar */
       // while(x2plusy2 <= 4 && I < MI) {
