@@ -7,7 +7,7 @@ cs225::PNG mandelbrot() {
   int Width = 640, Height = 480;
   cs225::PNG png(Width, Height);
  
-  bool Targeting = 0;
+  bool Targeting = 1;
 
 /*   double delta = 1.0/(8192 * 4096);
   double TargetY = 1.0/65536;
@@ -18,7 +18,7 @@ cs225::PNG mandelbrot() {
   double n = 2;
   double ScaleWidth = 4.5; // The length/width of the Real-Imaginary plane that the set is calculated in
   // double CenterxShift = -3/(4 * ScaleWidth);
-  double xShift = 0, yShift = 0; // Expressed as a percentage of the width and height of the image
+  double xShift = -0.0, yShift = -0.0; // Expressed as a percentage of the width and height of the image
   // For a scale width of 4, the centering xShift is -3/(4 * 4) = -0.1875. For a scale width of 5, it is -3/(5 * 4) = -0.15
   // 4.5 is used as the scale width since it allows more to be on the screen while still being close to 4
   // The centering xShift is the xShift that results in the horizontal center of the screen
@@ -35,6 +35,7 @@ cs225::PNG mandelbrot() {
       double x = 0, y = 0, x2plusy2 = 0, x2y2pown, narctan2yx;
       int I = 0;
 
+      /* Multibrot */
       while(x2plusy2 <= 4 && I < MI) {
         narctan2yx = n * atan2(y, x);
         x2y2pown = pow((x2plusy2), (n/2));
@@ -43,6 +44,29 @@ cs225::PNG mandelbrot() {
         x2plusy2 = x * x + y * y;
         ++I;
       }
+
+      // /* Mandelbar */
+      // while(x2plusy2 <= 4 && I < MI) {
+      //   narctan2yx = n * atan2(y, x);
+      //   x2y2pown = pow((x2plusy2), (n/2));
+      //   x = x2y2pown * cos(narctan2yx) + X;
+      //   y = -x2y2pown * sin(narctan2yx) + Y;
+      //   x2plusy2 = x * x + y * y;
+      //   ++I;
+      // }
+
+      // /* Burning Ship */
+      // while(x2plusy2 <= 4 && I < MI) {
+      //   narctan2yx = n * atan2(y, x);
+      //   x2y2pown = pow((x2plusy2), (n/2));
+      //   x = x2y2pown * cos(narctan2yx) + X;
+      //   y = abs(x2y2pown * sin(narctan2yx)) + Y;
+      //   x2plusy2 = x * x + y * y;
+      //   ++I;
+      // }
+
+      /* Other Fractals */
+      // ---
 
       cs225::HSLAPixel & pixel = png.getPixel(j, i);
       pixel.h = 300;
